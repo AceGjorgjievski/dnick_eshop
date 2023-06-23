@@ -1,0 +1,106 @@
+<th:block xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <div th:if="${param.SuccessfullyAdded != null}" style="color: green">
+        You have successfully added a new product!
+    </div>
+
+    <div th:if="${param.SuccessfullyAddedToCart != null}" style="color: green">
+        Successfully Added to Cart!
+    </div>
+
+    <div th:if="${param.SuccessfullyModified != null}" style="color: green">
+        Product is successfully modified!
+    </div>
+
+    <th:block>
+        <div class="container my-2">
+            <div class="row justify-content-md-end justify-content-center">
+                <th:block sec:authorize="!hasAuthority('USER')">
+                    <div class="d-flex justify-content-end">
+                        <a class="text-white btn btn-primary"
+                           sec:authorize="isAuthenticated()"
+                           href="/products/add">Add Product</a>
+                    </div>
+                </th:block>
+                <h2>All Products</h2>
+            </div>
+            <div class="row">
+                <div class="col-xl-3">
+                    <form id="filter-form">
+                        <div class="form-group">
+                            <label for="name">Search by name:</label>
+                            <input id="name"
+                                   type="text"
+                                   name="productName"
+                                   class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Search by price:</label>
+                            <input id="price"
+                                   type="number"
+                                   name="productPrice"
+                                   class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandId">Search by brand:</label>
+                            <select id="brandId" name="productBrand" class="form-control">
+                                <option value="">All</option>
+                                <option th:each="b : ${brands}" th:text="${b?.getName()}"
+                                        th:value="${b?.getId()}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group text-center mt-3">
+                            <button type="submit"
+                                    id="filter"
+                                    class="btn btn-primary btn-md btn-block">Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xl-9">
+                    <div class="row row-cols-3">
+                        <div th:each="p : ${productsList}">
+                            <div class="col mb-4">
+                                <div class="card" style="width: 18rem;">
+                                    <img th:src="${p?.getImage()}"
+                                         style="width: 270px;height: 170px;" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${p?.getName()}"></h5>
+                                        <p class="card-text" th:text="${p?.getPrice()} + ' MKD'"></p>
+                                        <th:block th:if="${p?.inStock}">
+                                            <p class="car-text" th:text="'In Stock'" style="color: green"></p>
+                                        </th:block>
+                                        <th:block th:if="${!p?.inStock}">
+                                            <p class="car-text" th:text="'Out of Stock'" style="color: red"></p>
+                                        </th:block>
+                                        <th:block sec:authorize="isAuthenticated()">
+                                            <div class="btn-group" role="group">
+                                                <form th:method="delete" sec:authorize="!hasAuthority('USER')"
+                                                      th:action="@{'/products/{id}/delete' (id=${p?.getId()})}">
+                                                    <button class="btn btn-primary mx-4">Delete</button>
+                                                </form>
+                                                <a sec:authorize="!hasAuthority('USER')" class="btn btn-outline-info"
+                                                   th:href="@{'/products/{id}/edit' (id=${p?.getId()})}">Edit</a>
+                                            </div>
+                                        </th:block>
+                                        <form method="post" th:action="@{'/cart/{id}/add-product' (id=${p?.getId()})}">
+                                            <button sec:authorize="!hasAuthority('ADMIN')"
+                                                    class="btn btn-primary"
+                                                    th:disabled="${p?.getQuantity() < 1}">Add To Cart
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </th:block>
+
+
+</th:block>
+
+

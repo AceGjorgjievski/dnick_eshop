@@ -1,0 +1,27 @@
+<th:block xmlns:sec="http://www.w3.org/1999/xhtml">
+    <h2>Orders!</h2>
+
+
+    <div>
+        <table class="table table-hover">
+            <tr>
+                <th>Products</th>
+                <th>Address</th>
+                <th>Date of order</th>
+                <th>Price</th>
+                <th>Order Status</th>
+            </tr>
+            <tr th:each="o : ${orders}">
+
+                <td th:each="p : ${o?.getShoppingCartItems()}" th:text="${p.getProduct().getName() + '\n'}"></td>
+                <td th:text="${o?.getAddress()}"></td>
+                <td th:text="${o?.getOrderCreated()}"></td>
+                <td th:text="${o?.getTotalPrice()}"></td>
+                <td th:text="${o?.getOrderStatus()}"></td>
+
+            </tr>
+        </table>
+    </div>
+
+
+</th:block>

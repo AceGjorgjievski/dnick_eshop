@@ -1,0 +1,113 @@
+<th:block xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <h2>Shopping cart</h2>
+
+    <div th:if="${param.SuccessfullyRemovedFromCart != null}" style="color: green">
+        Successfully Removed From Cart!
+    </div>
+    <div>
+        <table class="table table-hover">
+            <tr>
+                <th></th>
+                <th>Product Name</th>
+                <th>Product Quantity</th>
+                <th>Product Price</th>
+            </tr>
+            <tr th:each="ci : ${cartItemsList}">
+                <!--                <td><img alt="" th:src="*{'data:image/jpeg;base64,'+{ci.getImage()}}"-->
+                <!--                         style="width: 100px;height: 100px;">-->
+                </td>
+                <td><img alt="" th:src="${ci.getImage()}"
+                         style="width: 100px;height: 100px;"></td>
+                <td th:text="${ci?.getProduct()?.getName()}"></td>
+                <td th:text="${ci?.getQuantity()}"></td>
+                <td th:text="${ci?.getProduct()?.getPrice() * ci?.getQuantity()}"></td>
+                <td sec:authorize="isAuthenticated()">
+                    <th:block sec:authorize="isAuthenticated()">
+                        <form th:method="delete" th:action="@{'/cart/{id}/remove' (id=${ci?.getId()})}"
+                              onclick="return confirmQ()">
+                            <button class="btn btn-danger">Remove</button>
+                        </form>
+                    </th:block>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+    <div class="container text-center">
+        <p class="display-6" th:text="'Total: $' + ${totalPrice}"></p>
+        <hr class="w-25 mx-auto" style="height: 4px; background-color: black; border: none">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                data-bs-whatever="@mdo" id="orderButton">Order Now !
+        </button>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Checkout details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div>
+                    <form method="post" th:action="@{'/order/prepareOrder'}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="recipient-address" class="col-form-label">Shipping address:</label>
+                                <input name="address" type="text" class="form-control" required id="recipient-address">
+                            </div>
+                            <div class="form-group">
+                                <p class="display-6" th:text="'Total: $' + ${totalPrice}"></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Send message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <a href="/products">Continue Shopping</a>
+    </div>
+
+    <script th:inline="javascript">
+
+        // document.getElementById("orderButton").addEventListener("click", function() {
+        //     $('#orderModal').modal('show');
+        // });
+
+        function confirmQ() {
+            let text = "Are you sure for removing this product from you cart?";
+            if (confirm(text) == true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        var price;
+        /*<![CDATA[*/
+        price = /*[[${totalPrice}]]*/ "Price";
+        /*]]>*/
+
+        var orderButton = document.getElementById("orderButton");
+        orderButton.disabled = (price === 0);
+
+        // if (price > 0) {
+        //     button.disabled = false;
+        // } else {
+        //     button.disabled = true;
+        // }
+        //this ^ in 1 line: button.disabled = !(price > 0);
+
+
+    </script>
+
+</th:block>
