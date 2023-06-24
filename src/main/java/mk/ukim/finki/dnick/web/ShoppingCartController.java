@@ -49,8 +49,12 @@ public class ShoppingCartController {
     public String addProductToShoppingCart(@PathVariable Long id,
                                            HttpServletRequest req) {
         String username = req.getRemoteUser();
-        this.shoppingCartService.addProductToShoppingCart(username, id);
-        return "redirect:/products?SuccessfullyAddedToCart";
+        boolean addedToShoppingCart = this.shoppingCartService.addProductToShoppingCart(username, id);
+        String text = null;
+        if(addedToShoppingCart) text = "SuccessfullyAddedToCart";
+        else text = "NotAddedInCart";
+
+        return "redirect:/products?"+text;
     }
 
     @DeleteMapping("/{id}/remove")

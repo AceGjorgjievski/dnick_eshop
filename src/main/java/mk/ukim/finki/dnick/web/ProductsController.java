@@ -56,25 +56,9 @@ public class ProductsController {
     @GetMapping("/add")
     public String getAddPage(Model model) {
         model.addAttribute("brands", this.brandService.listAll());
+        model.addAttribute("addNewProduct", true);
         model.addAttribute("bodyContent", "addProduct");
         return "master-template";
-    }
-
-    @PostMapping("/add")
-    public String addProduct(@RequestParam(required = false) Long id,
-                             @RequestParam("name") String name,
-//                             @RequestParam("myfile") MultipartFile file,
-                             @RequestParam String image,
-                             @RequestParam("price") Double price,
-                             @RequestParam("brandId") Long brandId) {
-//        this.productService.add(name,file,price,brandId);
-        if(id == null) {
-            this.productService.add(name,image,price,brandId);
-            return "redirect:/products?SuccessfullyAdded";
-        } else {
-            this.productService.edit(id, name, image, price, brandId);
-            return "redirect:/products?SuccessfullyModified";
-        }
     }
 
     @GetMapping("/{id}/edit")
@@ -83,8 +67,29 @@ public class ProductsController {
         Product p = this.productService.findById(id);
         model.addAttribute("product", p);
         model.addAttribute("brands", this.brandService.listAll());
+        model.addAttribute("addNewProduct", false);
         model.addAttribute("bodyContent", "addProduct");
 
         return "master-template";
     }
+
+    @PostMapping("/add")
+    public String addProduct(@RequestParam(required = false) Long id,
+                             @RequestParam("name") String name,
+//                             @RequestParam("myfile") MultipartFile file,
+                             @RequestParam String image,
+                             @RequestParam("quantity") Integer quantity,
+                             @RequestParam("price") Double price,
+                             @RequestParam("brandId") Long brandId) {
+//        this.productService.add(name,file,price,brandId);
+        if(id == null) {
+            this.productService.add(name,image,quantity, price,brandId);
+            return "redirect:/products?SuccessfullyAdded";
+        } else {
+            this.productService.edit(id, name, image, quantity, price, brandId);
+            return "redirect:/products?SuccessfullyModified";
+        }
+    }
+
+
 }

@@ -21,7 +21,16 @@
                        name="image"
                        th:value="${product?.image}"
                        class="form-control"
-                       placeholder="Image">
+                       placeholder="Image address">
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity"
+                       required
+                       name="quantity"
+                       th:value="${product?.quantity}"
+                       class="form-control">
             </div>
 
             <div class="form-group">
@@ -46,9 +55,16 @@
             </div>
 
             <div class="my-3">
-                <button type="submit" class="btn btn-primary mx-2">
-                    Add Product
-                </button>
+                <th:block th:if="${addNewProduct}">
+                    <button type="submit" class="btn btn-primary mx-2">
+                        Add Product
+                    </button>
+                </th:block>
+                <th:block th:if="${!(addNewProduct)}">
+                    <button type="submit" class="btn btn-primary mx-2">
+                        Save Changes
+                    </button>
+                </th:block>
                 <a href="/products">Back</a>
             </div>
 

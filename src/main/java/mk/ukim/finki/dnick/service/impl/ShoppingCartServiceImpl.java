@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @Service
@@ -39,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public List<Product> listAllProductsInShoppingCart(Long cartId) {
-        if(!this.shoppingCartRepository.findById(cartId).isPresent())
+        if (!this.shoppingCartRepository.findById(cartId).isPresent())
             throw new ShoppingCartNotFoundException(cartId);
 
 //        return this.shoppingCartRepository
@@ -52,7 +53,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public List<ShoppingCartItem> listAllShoppingCartItems(Long cartId) {
-        if(!this.shoppingCartRepository.findById(cartId).isPresent()) {
+        if (!this.shoppingCartRepository.findById(cartId).isPresent()) {
             throw new ShoppingCartNotFoundException(cartId);
         }
 
@@ -77,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCart addProductToShoppingCart(String username, Long productId) {
+    public boolean addProductToShoppingCart(String username, Long productId) {
         ShoppingCart shoppingCart = this.getActiveCart(username);
         Product product = this.productRepository
                 .findById(productId)
@@ -89,23 +90,50 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .findFirst()
                 .orElse(null);
 
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-        } else {
-            ShoppingCartItem newCartItem = new ShoppingCartItem(product, 1, product.getImage());
-            newCartItem.setShoppingCart(shoppingCart);
-            ShoppingCartItem savedCartItem = shoppingCartItemRepository.save(newCartItem); // Save the new cart item
-            shoppingCart.getShoppingCartItems().add(savedCartItem);
-        }
+        boolean addedToShoppingCart = false;
 
+        if (product.getQuantityForShoppingCartItem() > 0) { //only if its > 0, others can add to their shopping cart
+            //else cannot proceed
+            if (existingItem != null) {
+                existingItem.setQuantity(existingItem.getQuantity() + 1);
+            } else {
+                ShoppingCartItem newCartItem = new ShoppingCartItem(product, 1, product.getImage());
+                newCartItem.setShoppingCart(shoppingCart);
+                ShoppingCartItem savedCartItem = shoppingCartItemRepository.save(newCartItem); // Save the new cart item
+                shoppingCart.getShoppingCartItems().add(savedCartItem);
+            }
+            product.setQuantityForShoppingCartItem(product.getQuantityForShoppingCartItem() - 1);
+            this.productRepository.save(product);
+
+            addedToShoppingCart = true;
+        }
         shoppingCart = this.shoppingCartRepository.save(shoppingCart); // Save the shopping cart first
-        return shoppingCart;
+        return addedToShoppingCart;
     }
 
     @Override
     public void removeProductFromShoppingCart(ShoppingCart shoppingCart, Long id) {
         List<ShoppingCartItem> items = shoppingCart.getShoppingCartItems();
-        items.removeIf(i -> i.getId().equals(id));
+
+        ShoppingCartItem selectedShoppingCartItem = null;
+
+        if(items.stream().filter(i -> i.getId().equals(id)).findFirst().isPresent()) {
+            selectedShoppingCartItem = items
+                    .stream()
+                    .filter(i -> i.getId().equals(id))
+                    .findFirst().get();
+
+            Product p = selectedShoppingCartItem.getProduct();
+
+            p.setQuantityForShoppingCartItem(
+                    p.getQuantityForShoppingCartItem() + selectedShoppingCartItem.getQuantity()
+            );
+            this.productRepository.save(p);
+            items.removeIf(i -> i.getId().equals(id));
+            this.shoppingCartItemRepository.deleteById(selectedShoppingCartItem.getId());
+        }
+
+
         shoppingCart.setShoppingCartItems(items);
         this.shoppingCartRepository.save(shoppingCart);
     }

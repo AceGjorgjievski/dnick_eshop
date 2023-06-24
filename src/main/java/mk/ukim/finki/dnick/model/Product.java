@@ -23,22 +23,22 @@ public class Product {
 
     private Integer quantity;
 
-    private boolean inStock;
+    private Integer quantityForShoppingCartItem;
 
     @ManyToOne
     private Brand brand;
 
     public Product() {
         this.quantity = 1;
-        this.inStock = this.quantity > 0;
+        this.quantityForShoppingCartItem = this.quantity;
     }
 
-    public Product(String name, String image, Double price, Brand brand) {
+    public Product(String name, String image,Integer quantity, Double price, Brand brand) {
         this.name = name;
         this.image = image;
         this.price = price;
         this.brand = brand;
-        this.quantity = 1;
-        this.inStock = this.quantity > 0;
+        this.quantity = quantity;
+        this.quantityForShoppingCartItem = this.quantity;
     }
 }

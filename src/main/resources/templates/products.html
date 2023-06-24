@@ -8,6 +8,10 @@
         Successfully Added to Cart!
     </div>
 
+    <div th:if="${param.NotAddedInCart != null}" style="color: red">
+        You cannot add more items of this product to your shopping cart!
+    </div>
+
     <div th:if="${param.SuccessfullyModified != null}" style="color: green">
         Product is successfully modified!
     </div>
@@ -67,10 +71,10 @@
                                     <div class="card-body">
                                         <h5 class="card-title" th:text="${p?.getName()}"></h5>
                                         <p class="card-text" th:text="${p?.getPrice()} + ' MKD'"></p>
-                                        <th:block th:if="${p?.inStock}">
+                                        <th:block th:if="${p?.getQuantity() > 0}">
                                             <p class="car-text" th:text="'In Stock'" style="color: green"></p>
                                         </th:block>
-                                        <th:block th:if="${!p?.inStock}">
+                                        <th:block th:if="${!(p?.getQuantity() > 0)}">
                                             <p class="car-text" th:text="'Out of Stock'" style="color: red"></p>
                                         </th:block>
                                         <th:block sec:authorize="isAuthenticated()">
@@ -86,7 +90,8 @@
                                         <form method="post" th:action="@{'/cart/{id}/add-product' (id=${p?.getId()})}">
                                             <button sec:authorize="!hasAuthority('ADMIN')"
                                                     class="btn btn-primary"
-                                                    th:disabled="${p?.getQuantity() < 1}">Add To Cart
+                                                    th:disabled="${p?.getQuantity() < 1}"
+                                                    >Add To Cart
                                             </button>
                                         </form>
                                     </div>
@@ -99,8 +104,6 @@
         </div>
 
     </th:block>
-
-
 </th:block>
 
 

@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product add(String name, MultipartFile multipartFile, Double price, Long brandId) {
+    public Product add(String name, MultipartFile multipartFile, Integer quantity, Double price, Long brandId) {
 
         String image = this.setProductImage(multipartFile);
 //        System.out.println("Adding an image: "+image);
@@ -44,15 +44,15 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
 
 
-        Product p = new Product(name, image, price, b);
+        Product p = new Product(name, image, quantity, price, b);
         return this.productRepository.save(p);
     }
 
     @Override
-    public Product add(String name, String image, Double price, Long brandId) {
+    public Product add(String name, String image, Integer quantity, Double price, Long brandId) {
         Brand b = this.brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
-        Product p = new Product(name, image, price, b);
+        Product p = new Product(name, image, quantity, price, b);
 
         return this.productRepository.save(p);
     }
@@ -70,13 +70,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product edit(Long productId, String name, MultipartFile file, Double price, Long brandId) {
+    public Product edit(Long productId, String name, MultipartFile file,Integer quantity, Double price, Long brandId) {
         Product p = this.findById(productId);
 
         p.setName(name);
 
         String image = this.setProductImage(file);
-
+        p.setQuantity(quantity);
         p.setImage(image);
         p.setPrice(price);
 
@@ -89,11 +89,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product edit(Long productId, String name, String image, Double price, Long brandId) {
+    public Product edit(Long productId, String name, String image, Integer quantity, Double price, Long brandId) {
         Product p = this.findById(productId);
 
         p.setName(name);
         p.setImage(image);
+        p.setQuantity(quantity);
         p.setPrice(price);
 
         Brand b = this.brandRepository
