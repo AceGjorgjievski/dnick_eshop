@@ -13,7 +13,11 @@
     </div>
 
     <div th:if="${param.SuccessfullyModified != null}" style="color: green">
-        <div th:include="popup-messages/youCannotAddMoreItems.html"></div>
+        <div th:include="popup-messages/successfullyModifiedProduct.html"></div>
+    </div>
+
+    <div th:if="${param.SuccessfullyRemoved != null}" style="color: green">
+        <div th:include="popup-messages/successfullyRemoved.html"></div>
     </div>
 
     <th:block>

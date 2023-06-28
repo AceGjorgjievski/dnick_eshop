@@ -96,5 +96,11 @@ public class ProductsController {
         }
     }
 
+    @DeleteMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        this.productService.deleteById(id);
+        return "redirect:/products?SuccessfullyRemoved";
+    }
+
 
 }

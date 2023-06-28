@@ -1,6 +1,6 @@
 <th:block xmlns:sec="http://www.w3.org/1999/xhtml">
 
-    <div class="container">
+    <div class="container my-5">
         <form method="post" action="/register">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -42,10 +42,10 @@
 
             <div th:if="${param.error != null}" th:text="${param.error}" style="color: red"></div>
 
-            <div class="my-3">
-                <button type="submit" class="btn btn-primary">Register</button>
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-primary mx-2">Register</button>
+                <a th:href="@{'/login'}">Already registered? Log in!</a>
             </div>
         </form>
-        <a th:href="@{'/login'}">Already registered? Log in!</a>
     </div>
 </th:block>
