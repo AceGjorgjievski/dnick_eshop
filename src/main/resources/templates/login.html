@@ -21,8 +21,8 @@
                        required>
             </div>
             <div th:if="${param.error != null} " th:text="${param.error}" style="color: red"></div>
-            <div th:if="${param.SuccessfullyRegistered != null}" style="color: green">You have registered successfully!
-                You can log in now !
+            <div th:if="${param.SuccessfullyRegistered != null}">
+                <div th:include="popup-messages/successfullyRegistered.html"></div>
             </div>
 
             <div class="form-group my-3">

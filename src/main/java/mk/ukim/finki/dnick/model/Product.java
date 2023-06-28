@@ -41,4 +41,10 @@ public class Product {
         this.quantity = quantity;
         this.quantityForShoppingCartItem = this.quantity;
     }
+
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        this.quantityForShoppingCartItem = quantity;
+    }
 }

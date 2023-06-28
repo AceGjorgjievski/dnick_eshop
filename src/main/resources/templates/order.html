@@ -13,7 +13,12 @@
             </tr>
             <tr th:each="o : ${orders}">
 
-                <td th:each="p : ${o?.getShoppingCartItems()}" th:text="${p.getProduct().getName() + '\n'}"></td>
+                <td>
+                    <div th:each="p : ${o.shoppingCartItems}">
+                        <span th:text="${p.getProduct().getName()}"></span><br>
+                    </div>
+                </td>
+
                 <td th:text="${o?.getAddress()}"></td>
                 <td th:text="${o?.getOrderCreated()}"></td>
                 <td th:text="${o?.getTotalPrice()}"></td>

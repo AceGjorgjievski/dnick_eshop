@@ -4,16 +4,16 @@
         You have successfully added a new product!
     </div>
 
-    <div th:if="${param.SuccessfullyAddedToCart != null}" style="color: green">
-        Successfully Added to Cart!
+    <div th:if="${param.SuccessfullyAddedToCart != null}">
+        <div th:include="popup-messages/successfullyAddedToCart.html"></div>
     </div>
 
     <div th:if="${param.NotAddedInCart != null}" style="color: red">
-        You cannot add more items of this product to your shopping cart!
+        <div th:include="popup-messages/youCannotAddMoreItems.html"></div>
     </div>
 
     <div th:if="${param.SuccessfullyModified != null}" style="color: green">
-        Product is successfully modified!
+        <div th:include="popup-messages/youCannotAddMoreItems.html"></div>
     </div>
 
     <th:block>

@@ -64,6 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCart getActiveCart(String username) {
         User u = this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserWithUsernameNotFoundException(username));
@@ -139,6 +140,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void emptyShoppingCart(String username) {
         ShoppingCart cart = this.getActiveCart(username);
 

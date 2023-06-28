@@ -1,7 +1,6 @@
 package mk.ukim.finki.dnick.web;
 
 
-import mk.ukim.finki.dnick.model.Order;
 import mk.ukim.finki.dnick.model.ShoppingCart;
 import mk.ukim.finki.dnick.model.ShoppingCartItem;
 import mk.ukim.finki.dnick.service.OrderService;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -40,6 +40,7 @@ public class OrderController {
     }
 
     @PostMapping("/prepareOrder")
+    @Transactional
     public String prepareOrder(Model model,HttpServletRequest request,
                                @RequestParam String address) {
 
@@ -48,7 +49,7 @@ public class OrderController {
 
         List<ShoppingCartItem> shoppingCartItems = this.shoppingCartService.listAllShoppingCartItems(cart.getId());
 
-        this.orderService.placeOrder(shoppingCartItems, address); //error here
+        this.orderService.placeOrder(shoppingCartItems, address);
         this.shoppingCartService.emptyShoppingCart(username);
         return "redirect:/order";
     }

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/products")
@@ -46,6 +48,9 @@ public class ProductsController {
             productList = this.productService.filter(productName, productBrandId, productPrice);
         }
 
+        productList = productList.stream()
+                .sorted(Comparator.comparing(Product::getId))
+                .collect(Collectors.toList());
 
         model.addAttribute("productsList", productList);
         model.addAttribute("brands", this.brandService.listAll());

@@ -2,8 +2,8 @@
 
     <h2>Shopping cart</h2>
 
-    <div th:if="${param.SuccessfullyRemovedFromCart != null}" style="color: green">
-        Successfully Removed From Cart!
+    <div th:if="${param.SuccessfullyRemovedFromCart != null}">
+        <div th:include="popup-messages/successfullyRemovedFromCart.html"></div>
     </div>
     <div>
         <table class="table table-hover">
@@ -73,7 +73,7 @@
     </div>
 
 
-    <div>
+    <div class="container text-center">
         <a href="/products">Continue Shopping</a>
     </div>
 

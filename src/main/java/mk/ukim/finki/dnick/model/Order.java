@@ -41,7 +41,7 @@ public class Order {
 
     public Order(List<ShoppingCartItem> shoppingCartItems, String address) {
         this.address = address;
-        this.shoppingCartItems = shoppingCartItems;
+        this.shoppingCartItems = new ArrayList<>(shoppingCartItems);
         this.orderCreated = LocalDateTime.now();
         this.orderStatus = OrderStatus.CREATED;
         this.totalPrice = shoppingCartItems
