@@ -1,5 +1,5 @@
 # dnick_eshop
 
 
-- Final homework of Human-Computer Interaction
+- Final homework of Human-Computer Interaction course
 
