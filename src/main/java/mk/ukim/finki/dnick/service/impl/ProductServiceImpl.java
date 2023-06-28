@@ -104,6 +104,11 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.save(p);
     }
 
+    /**
+     *
+     * this method might not work because of the
+     * findProducts() method instead of findAll...
+     */
     @Override
     public List<Product> filter(String productName, String productBrand, Double productPrice) {
 
@@ -149,13 +154,13 @@ public class ProductServiceImpl implements ProductService {
 
         if(validProductName && brand == null && productPrice == null) { //ok
             return this.productRepository //samo ime
-                    .findAllByNameLike(nameLike);
+                    .findAllByNameLikeIgnoreCase(nameLike);
         } else if(validProductName && brand != null && productPrice == null) { // ok
             return this.productRepository //ime i brand
-                    .findAllByNameLikeAndBrand(nameLike, brand);
+                    .findAllByNameLikeIgnoreCaseAndBrand(nameLike, brand);
         } else if (validProductName && brand != null && productPrice != null) {
             return this.productRepository // ime, brand, price
-                    .findAllByNameLikeAndBrandAndPriceLessThanEqual(nameLike, brand, productPrice);
+                    .findAllByNameLikeIgnoreCaseAndBrandAndPriceLessThanEqual(nameLike, brand, productPrice);
         } else if(!validProductName && brand != null && productPrice == null) {
             return this.productRepository  //samo brand
                     .findAllByBrand(brand);
@@ -166,7 +171,7 @@ public class ProductServiceImpl implements ProductService {
         } else if (validProductName && brand == null && productPrice != null) {
             //ime, price
             return this.productRepository
-                    .findAllByNameLikeAndPriceLessThanEqual(nameLike, productPrice);
+                    .findAllByNameLikeIgnoreCaseAndPriceLessThanEqual(nameLike, productPrice);
         } else if(!validProductName && brand == null && productPrice != null) {
             //price
             return this.productRepository

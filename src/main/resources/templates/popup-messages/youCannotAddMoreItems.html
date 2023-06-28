@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #cart-notification {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: #f1041a;
+      color: #fff;
+      opacity: 0.95;
+      padding: 10px;
+      border-radius: 4px;
+      transition: opacity 0.95s;
+    }
+
+    .hidden {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="cart-notification" class="hidden">You cannot add more items of this product to your shopping cart!</div>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    var notification = document.getElementById('cart-notification');
+
+    // Show the notification
+    notification.classList.remove('hidden');
+
+    // Hide the notification after 5 seconds
+    setTimeout(function() {
+      notification.style.opacity = 0; // Set opacity to 0 when hiding
+      setTimeout(function() {
+        notification.classList.add('hidden');
+      }, 500); // Wait for the transition to complete before adding the 'hidden' class
+    }, 1200);
+  });
+
+</script>
+</body>
+</html>
