@@ -1,7 +1,7 @@
 <th:block xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <div th:if="${param.SuccessfullyAdded != null}" style="color: green">
-        You have successfully added a new product!
+        <div th:include="popup-messages/addedNewProduct.html"></div>
     </div>
 
     <div th:if="${param.SuccessfullyAddedToCart != null}">

@@ -40,7 +40,7 @@ public class RegisterController {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String passwordRepeat = request.getParameter("password-repeat");
-            Role userRole = Role.MOD;
+            Role userRole = Role.USER;
 
             this.userService.register(name, surname, birthday, email, username, password, passwordRepeat, userRole);
 

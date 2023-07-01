@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-@Repository
+//@Repository
 //@Transactional
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
     Optional<ShoppingCart> findByUserAndCartStatus(User user, ShoppingCartStatus shoppingCartStatus);
