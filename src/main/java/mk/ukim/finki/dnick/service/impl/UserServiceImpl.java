@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User login(String username, String password) {
         if (username == null || username.isEmpty() ||
                 password == null || password.isEmpty()) throw new InvalidArgumentException(username, password);
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User register(String name, String surname, LocalDate birthday, String email, String username, String password, String passwordRepeat, Role role) {
         if (name == null || name.isEmpty() || surname == null || surname.isEmpty())
             throw new InvalidUserCredentialsException();
