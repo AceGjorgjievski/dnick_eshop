@@ -4,7 +4,7 @@
 - Final homework of Human-Computer Interaction course
 
 
-###Simple E-Shop for managing list of products, add then to a shopping cart and place orders.
+### Simple E-Shop for managing list of products, add then to a shopping cart and place orders.
 
 
 **There are two types of roles: User, Admin**
