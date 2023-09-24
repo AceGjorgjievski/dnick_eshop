@@ -17,7 +17,7 @@ I created one service for the java Spring boot app and another one for PostgreSQ
 ![Image 9](https://i.imgur.com/AcjizWC.png)
 
 Unfortunately, the service for the Spring boot app failed because it ran out
-of memory while running the code.
+of memory while running the code, but the database is still active.
 
 This [playlist](https://www.youtube.com/playlist?list=PLg7lel5LdVjyO7jk-4biyr0fqPVygTLOk) helped me how to host the application online.
 Videos 5 & 8.
